@@ -16,7 +16,9 @@ public class RenLandlordJDBCDAO implements RenLandlordDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT ldd_id,ldd_mem_id,ldd_approval FROM `CFA104G5`.`REN_LANDLORD` WHERE ldd_id = ?";
 	private static final String DELETE = "DELETE FROM `CFA104G5`.`REN_LANDLORD` WHERE ldd_id = ?";
 	private static final String UPDATE = "UPDATE `CFA104G5`.`REN_LANDLORD` set ldd_mem_id =?, ldd_approval=? WHERE ldd_id = ?";
+	private static final String UPDATESTATUS = "UPDATE `member` set mem_landlord = ? where mem_id =?";
 
+	
 	static {
 		try {
 			Class.forName(Util.DRIVER);
@@ -63,6 +65,9 @@ public class RenLandlordJDBCDAO implements RenLandlordDAO_interface {
 			Util.closeResource(con, pstmt, rs);
 		}
 	}
+	
+	
+	
 
 	@Override
 	public void delete(Integer ldd_id) {
@@ -129,6 +134,24 @@ public class RenLandlordJDBCDAO implements RenLandlordDAO_interface {
 			Util.closeResource(con, pstmt, rs);
 		}
 		return list;
+	}
+
+	@Override
+	public void updatestatus(RenLandlordVO renLandlordVO) {
+		try {
+			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			pstmt = con.prepareStatement(UPDATESTATUS);
+			rs = pstmt.executeQuery();
+
+			pstmt.setInt(1, renLandlordVO.getLddApproval());
+			pstmt.setInt(2, renLandlordVO.getLddMemId());
+
+			pstmt.executeUpdate();
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			Util.closeResource(con, pstmt, rs);
+		}		
 	}
 
 }

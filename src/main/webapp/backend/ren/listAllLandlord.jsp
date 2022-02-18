@@ -1,38 +1,97 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="ezs.ren_landlord.model.*"%>
+<%@ page import="ezs.member.model.*"%>
+
 
 <%
 RenLandlordService renlandlordSvc = new RenLandlordService();
 List<RenLandlordVO> list = renlandlordSvc.getAll();
 pageContext.setAttribute("list", list);
 %>
+<%
+MemberService memberSvc = new MemberService();
+List<MemberVO> list2 = memberSvc.getAll();
+pageContext.setAttribute("list2", list2);
+%>
 
 
 <html>
 <head>
-<title>©Ò¦³¥Ó½Ğ©ĞªF¸ê®Æ - listAllLandlord.jsp</title>
-
+<title>æ‰€æœ‰ç”³è«‹æˆ¿æ±è³‡æ–™ - listAllLandlord.jsp</title>
+<style>
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+ 
+body {
+    margin: 10px;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+ 
+td,th {
+    padding: 0;
+}
+ 
+.pure-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 1px solid #cbcbcb;
+}
+ 
+.pure-table caption {
+    color: #000;
+    font: italic 85%/1 arial,sans-serif;
+    padding: 1em 0;
+    text-align: center;
+}
+ 
+.pure-table td,.pure-table th {
+    border-left: 1px solid #cbcbcb;
+    border-width: 0 0 0 1px;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding: .5em 1em;
+}
+ 
+.pure-table thead {
+    background-color: #e0e0e0;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+}
+ 
+.pure-table td {
+    background-color: transparent;
+}
+</style>
 </head>
 <body bgcolor='white'>
 
 	<table id="table-1">
 		<tr>
 			<td>
-				<h3>©Ò¦³©ĞªF¸ê®Æ - listAllLandlord.jsp</h3>
+				<h3>æ‰€æœ‰æˆ¿æ±è³‡æ–™ - listAllLandlord.jsp</h3>
 				<h4>
 					<a href="select.jsp"><img
 						src="<%=request.getContextPath()%>/images/ren/back_icon.png"
-						width="60" height="60" border="0">¦^­º­¶</a>
+						width="60" height="60" border="0">å›é¦–é </a>
 				</h4>
 			</td>
 		</tr>
 	</table>
 
-	<%-- ¿ù»~ªí¦C --%>
+	<%-- éŒ¯èª¤è¡¨åˆ— --%>
 	<c:if test="${not empty errorMsgs}">
-		<font style="color: red">½Ğ­×¥¿¥H¤U¿ù»~:</font>
+		<font style="color: red">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</font>
 		<ul>
 			<c:forEach var="message" items="${errorMsgs}">
 				<li style="color: red">${message}</li>
@@ -40,33 +99,40 @@ pageContext.setAttribute("list", list);
 		</ul>
 	</c:if>
 
-	<table>
+	<table class="pure-table"> 
+		<thead>
 		<tr>
-			<th>©ĞªF½s¸¹</th>
-			<th>·|­û½s¸¹</th>
-			<th>·|­û¦WºÙ</th>
-			<th>¼f®Öª¬ºA</th>
-			<th>­×§ï</th>
-			<th>§R°£</th>
+			<th>æˆ¿æ±ç·¨è™Ÿ</th>
+			<th>æœƒå“¡ç·¨è™Ÿ</th>
+			<th>æœƒå“¡åç¨±</th>
+			<th>å¯©æ ¸ç‹€æ…‹</th>
+			<th>ä¿®æ”¹</th>
+			<th>åˆªé™¤</th>
 		</tr>
+		</thead>
+		<tbody>
 		<%@ include file="page1.file"%>
 		<c:forEach var="renLandlordVO" items="${list}" begin="<%=pageIndex%>"
 			end="<%=pageIndex+rowsPerPage-1%>">
 			<tr>
 				<td>${renLandlordVO.lddId}</td>
 				<td>${renLandlordVO.lddMemId}</td>
-				<td></td>
+		
+		<td>
+		<c:forEach var="memberVO" items="${list2}">
+		<c:if test="${renLandlordVO.lddMemId == memberVO.memID}">${memberVO.memName}</c:if>
+		</c:forEach>
+		</td>		
 				<td>
-					<c:if test="${renLandlordVO.lddApproval == 0}">¼f®Ö¤¤</c:if>
-					<c:if test="${renLandlordVO.lddApproval == 1}">¼f®Ö¥¼¹L</c:if> 
-					<c:if test="${renLandlordVO.lddApproval == 2}">¼f®Ö¤w¹L</c:if>
+					<c:if test="${renLandlordVO.lddApproval == 0}">å¯©æ ¸ä¸­</c:if>
+					<c:if test="${renLandlordVO.lddApproval == 1}">å¯©æ ¸æœªé</c:if> 
+					<c:if test="${renLandlordVO.lddApproval == 2}">å¯©æ ¸å·²é</c:if>
 				</td>
-
 				<td>
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/ren_landlord/RenLandlordServlet.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="­×§ï"> <input type="hidden"
+						<input type="submit" value="ä¿®æ”¹"> <input type="hidden"
 							name="lddId" value="${renLandlordVO.lddId}"> <input
 							type="hidden" name="action" value="getOne_For_Update">
 					</FORM>
@@ -75,13 +141,14 @@ pageContext.setAttribute("list", list);
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/ren_landlord/RenLandlordServlet.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="§R°£"> <input type="hidden"
+						<input type="submit" value="åˆªé™¤"> <input type="hidden"
 							name="lddId" value="${renLandlordVO.lddId}"> <input
 							type="hidden" name="action" value="delete">
 					</FORM>
 				</td>
 			</tr>
 		</c:forEach>
+		</tbody>
 	</table>
 	<%@ include file="page2.file"%>
 

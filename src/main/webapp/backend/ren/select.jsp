@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <html>
@@ -13,11 +13,11 @@
    <tr><td><h3>Home</h3></td></tr>
 </table>
 
-<h3>��Ƭd��:</h3>
+<h3>資料查詢:</h3>
 	
-<!-- ���~���C-->
+<!-- 錯誤表列-->
 <c:if test="${not empty errorMsgs}">
-	<font style="color:red">�Эץ��H�U���~:</font>
+	<font style="color:red">請修正以下錯誤:</font>
 	<ul>
 	    <c:forEach var="message" items="${errorMsgs}">
 			<li style="color:red">${message}</li>
@@ -32,14 +32,14 @@
    
   <li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ren_landlord/RenLandlordServlet.do" >
-       <b>��ܩЪF�s��:</b>
+       <b>選擇房東編號:</b>
        <select size="1" name="lddId">
          <c:forEach var="renLandlordVO" items="${renlandlordSvc.all}" > 
           <option value="${renLandlordVO.lddId}">${renLandlordVO.lddId}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="�e�X">
+       <input type="submit" value="送出">
     </FORM>
   </li>
 </ul> 
